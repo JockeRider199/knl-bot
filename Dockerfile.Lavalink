@@ -1,0 +1,7 @@
+FROM eclipse-temurin:11
+
+WORKDIR /home/app
+
+COPY ./src/music-server .  
+
+CMD ["java", "-jar", "Lavalink.jar"]

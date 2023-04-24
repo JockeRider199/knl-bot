@@ -5,9 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"husky:prepare": "husky install && husky add .husky/pre-commit \"pnpm lint-staged\"",
-		"format": "prettier --write ./src/",
+		"format": "prettier --write ./src/client/",
 		"clean": "rm -rf dist",
-		"bot:dev": "ts-node src/index.ts"
+		"bot:dev": "ts-node src/client/index.ts"
 	},
 	"keywords": [],
 	"author": "",
@@ -24,11 +24,12 @@
 	"dependencies": {
 		"@prisma/client": "^4.13.0",
 		"discord.js": "^14.9.0",
-		"dotenv": "^16.0.3"
+		"dotenv": "^16.0.3",
+		"poru": "^4.2.0"
 	},
 	"lint-staged": {
 		"**/*.{ts,js,json}": [
-			"prettier --write ./src/"
+			"prettier --write ./src/client/"
 		],
 		".prisma": "pnpm prisma format"
 	},
