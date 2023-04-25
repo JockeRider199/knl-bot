@@ -5,3 +5,4 @@ logs/
 
 .env
 .DS_Store
+src/music-server/application.yml
