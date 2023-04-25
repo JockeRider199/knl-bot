@@ -1,7 +1,7 @@
 import { config as envConfig } from "dotenv";
 
 import { Client } from "./models/client";
-import * as Database from "./utils/database";
+//import * as Database from "./utils/database";
 
 envConfig();
 const client = new Client();
