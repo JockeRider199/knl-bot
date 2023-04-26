@@ -1,7 +1,7 @@
 import { config as envConfig } from "dotenv";
 
 import { Client } from "./models/client";
-//import * as Database from "./utils/database";
+import * as Database from "./utils/database";
 
 envConfig();
 const client = new Client();
@@ -10,7 +10,7 @@ async function main(): Promise<void> {
 	await client.loadEvents();
 	await client.loadMusicEvents();
 	await client.loadSlashCommands();
-	//await Database.init();
+	await Database.init();
 
 	if (process.env.CACHE === "clear") {
 		console.log("Resetting cache");
