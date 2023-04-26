@@ -24,3 +24,18 @@ services:
     restart: unless-stopped
     ports:
       - "2333:2333"
+  bot:
+    image: jockerider199/knl-bot:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.Bot
+    depends_on:
+      db:
+        condition: service_healthy
+      lavalink:
+        condition: service_started
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - CONTAINER=TRUE

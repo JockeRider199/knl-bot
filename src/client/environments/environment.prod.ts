@@ -13,7 +13,7 @@ const config: Config = {
 		nodes: [
 			{
 				name: "local-node",
-				host: "localhost",
+				host: process.env.CONTAINER == "TRUE" ? "lavalink" : "localhost",
 				port: 2333,
 				password: process.env.LAVALINK_PASSWORD!,
 			},

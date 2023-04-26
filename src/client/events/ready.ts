@@ -11,6 +11,9 @@ export const readyEvent: Event = {
 		if (process.env.PRODUCTION == "TRUE") {
 			console.log("Prod mode");
 		}
+		if (process.env.CONTAINER == "TRUE") {
+			console.log("Container mode");
+		}
 		client.initPoru();
 	},
 };
