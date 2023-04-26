@@ -17,21 +17,21 @@ const command: SlashCommand = {
 		),
 
 	exec: async (interaction, client) => {
+		await interaction.deferReply();
+
 		const guildMember = <GuildMember>interaction.member;
 
 		if (!guildMember.voice.channel) {
-			return interaction.reply({
+			return interaction.editReply({
 				content: `Connectez-vous à un salon vocal avant d'utiliser cette commande.`,
-				ephemeral: true,
 			});
 		}
 
 		const song = interaction.options.getString("lien")!;
 
 		if (!song.startsWith("https")) {
-			return interaction.reply({
+			return interaction.editReply({
 				content: `Veuillez entrer un lien valide.`,
-				ephemeral: true,
 			});
 		}
 
@@ -42,9 +42,9 @@ const command: SlashCommand = {
 		});
 
 		if (res.loadType === "LOAD_FAILED") {
-			return interaction.reply("Echec du chargement de la musique.");
+			return interaction.editReply("Echec du chargement de la musique.");
 		} else if (res.loadType === "NO_MATCHES") {
-			return interaction.reply("Aucune musique trouvée.");
+			return interaction.editReply("Aucune musique trouvée.");
 		}
 
 		const player = client.poru.createConnection({
@@ -61,14 +61,14 @@ const command: SlashCommand = {
 				player.queue.add(track);
 			}
 
-			interaction.reply(
+			interaction.editReply(
 				`${res.playlistInfo.name} a été ajoutée dans la file avec ${res.tracks.length} musiques.`
 			);
 		} else {
 			const track = res.tracks[0];
 			track.info.requester = guildMember;
 			player.queue.add(track);
-			interaction.reply(`Ajout de la musique \n \`${track.info.title}\``);
+			interaction.editReply(`Ajout de la musique \n \`${track.info.title}\``);
 		}
 
 		if (!player.isPlaying && player.isConnected) player.play();
