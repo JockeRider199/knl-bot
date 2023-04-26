@@ -1,0 +1,10 @@
+FROM node:20-slim
+
+WORKDIR /home/knl
+
+COPY ./dist /home/knl/
+
+RUN npm install
+RUN npx prisma generate
+
+CMD node src/client/index.js

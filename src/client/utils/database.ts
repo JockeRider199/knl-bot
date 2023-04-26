@@ -3,7 +3,7 @@ const prisma = new PrismaClient({
 	datasources: {
 		db: {
 			url:
-				process.env.PRODUCTION == "TRUE"
+				process.env.PRODUCTION == "TRUE" || process.env.CONTAINER == "TRUE"
 					? process.env.PROD_DATABASE_URL
 					: process.env.DATABASE_URL,
 		},
