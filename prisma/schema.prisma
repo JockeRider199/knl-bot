@@ -11,6 +11,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id String @id @default(uuid())
+model Guild {
+  modelId String @id @default(uuid())
+  id String @unique
+  voices VoiceChannel[]
+  voiceCreationChannelId String?
+  voiceCreationCategoryId String?
+}
+
+model VoiceChannel {
+  modelId String @id @default(uuid())
+  id String @unique
+  guild Guild @relation(fields: [guildId], references: [id])
+  guildId String
+  ownerId String
+
+  @@unique(fields: [guildId, id], name: "channel")
 }
