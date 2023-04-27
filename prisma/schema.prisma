@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
   output   = "../node_modules/.prisma/client"
@@ -17,6 +14,8 @@ model Guild {
   voices VoiceChannel[]
   voiceCreationChannelId String?
   voiceCreationCategoryId String?
+  TicketsConfig TicketsConfig?
+  Ticket        Ticket[]
 }
 
 model VoiceChannel {
@@ -27,4 +26,25 @@ model VoiceChannel {
   ownerId String
 
   @@unique(fields: [guildId, id], name: "channel")
+}
+
+model TicketsConfig {
+  modelId          String   @id @default(uuid())
+  guild            Guild    @relation(fields: [guildId], references: [id])
+  guildId          String   @unique
+  count            Int      @default(0000)
+  tickets          Ticket[]
+  modRoleId        String
+  ticketCategoryId String
+}
+
+model Ticket {
+  modelId         String         @id @default(uuid())
+  channelId       String         @unique
+  ownerId         String
+  ticketsConfig   TicketsConfig? @relation(fields: [ticketsConfigId], references: [modelId])
+  ticketsConfigId String?
+  guild           Guild          @relation(fields: [guildId], references: [id])
+  guildId         String
+  opened          Boolean        @default(true)
 }
