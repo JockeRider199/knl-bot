@@ -8,7 +8,7 @@ const event: Event = {
 	},
 
 	exec: async (client, oldState: VoiceState, newState: VoiceState) => {
-		if (!newState.guild || newState.member?.user.bot) return;
+		if (!newState.guild) return;
 
 		const voiceConfig = await Database.getVoiceConfig(newState.guild.id);
 
