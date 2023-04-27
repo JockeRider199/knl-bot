@@ -1,5 +1,7 @@
+import { VoiceChannel } from "discord.js";
 import { type Client } from "../models/client";
 import { type Event } from "../models/event";
+import * as Database from "../utils/database";
 
 export const readyEvent: Event = {
 	settings: {
@@ -15,6 +17,19 @@ export const readyEvent: Event = {
 			console.log("Container mode");
 		}
 		client.initPoru();
+
+		const voices = await Database.getTempVoices();
+		for (const voice of voices) {
+			const voiceChannel = (await client.channels.fetch(
+				voice.id
+			)) as VoiceChannel;
+			if (!voiceChannel || voiceChannel.members.size < 1) {
+				await Database.removeVoiceChannel(voice.guildId, voice.id);
+				if (voiceChannel) {
+					await voiceChannel.delete();
+				}
+			}
+		}
 	},
 };
 

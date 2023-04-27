@@ -164,3 +164,14 @@ export async function getVoiceOwnerId(guildId: string, channelId: string) {
 
 	return voice?.ownerId;
 }
+
+export async function getTempVoices() {
+	const voices = await prisma.voiceChannel.findMany({
+		select: {
+			id: true,
+			guildId: true,
+		},
+	});
+
+	return voices;
+}
