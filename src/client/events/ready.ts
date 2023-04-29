@@ -2,6 +2,7 @@ import { VoiceChannel } from "discord.js";
 import { type Client } from "../models/client";
 import { type Event } from "../models/event";
 import * as Database from "../utils/database";
+import * as checkUnbans from "../utils/checkUnbans";
 
 export const readyEvent: Event = {
 	settings: {
@@ -17,6 +18,7 @@ export const readyEvent: Event = {
 			console.log("Container mode");
 		}
 		client.initPoru();
+		checkUnbans.init(client);
 
 		const voices = await Database.getTempVoices();
 		for (const voice of voices) {
