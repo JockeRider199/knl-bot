@@ -9,19 +9,20 @@ datasource db {
 }
 
 model Guild {
-  modelId String @id @default(uuid())
-  id String @unique
-  voices VoiceChannel[]
-  voiceCreationChannelId String?
+  modelId                 String         @id @default(uuid())
+  id                      String         @unique
+  voices                  VoiceChannel[]
+  voiceCreationChannelId  String?
   voiceCreationCategoryId String?
-  TicketsConfig TicketsConfig?
-  Ticket        Ticket[]
+  TicketsConfig           TicketsConfig?
+  Ticket                  Ticket[]
+  Bans                    Ban[]
 }
 
 model VoiceChannel {
   modelId String @id @default(uuid())
-  id String @unique
-  guild Guild @relation(fields: [guildId], references: [id])
+  id      String @unique
+  guild   Guild  @relation(fields: [guildId], references: [id])
   guildId String
   ownerId String
 
@@ -47,4 +48,15 @@ model Ticket {
   guild           Guild          @relation(fields: [guildId], references: [id])
   guildId         String
   opened          Boolean        @default(true)
+}
+
+model Ban {
+  modelId  String @id @default(uuid())
+  memberId String
+  guildId  String
+  guild    Guild  @relation(fields: [guildId], references: [id])
+  reason   String
+  until    BigInt
+
+  @@unique(fields: [memberId, guildId])
 }

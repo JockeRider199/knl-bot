@@ -311,3 +311,53 @@ export async function getTempVoices() {
 
 	return voices;
 }
+
+export async function tempBanMember(
+	guildId: string,
+	memberId: string,
+	reason: string,
+	time: number
+) {
+	await getOrCreateGuild(guildId);
+
+	await prisma.ban.create({
+		data: {
+			guildId,
+			memberId,
+			reason,
+			until: Date.now() + time,
+		},
+	});
+}
+
+export async function removeMemberBan(guildId: string, memberId: string) {
+	await getOrCreateGuild(guildId);
+
+	await prisma.ban.delete({
+		where: {
+			memberId_guildId: {
+				guildId,
+				memberId,
+			},
+		},
+	});
+}
+
+export async function getBannedMembers() {
+	return await prisma.ban.findMany({});
+}
+
+export async function isMemberTempBanned(guildId: string, memberId: string) {
+	await getOrCreateGuild(guildId);
+
+	const res = await prisma.ban.findUnique({
+		where: {
+			memberId_guildId: {
+				memberId,
+				guildId,
+			},
+		},
+	});
+
+	return res ? true : false;
+}
