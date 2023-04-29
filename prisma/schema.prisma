@@ -17,6 +17,7 @@ model Guild {
   TicketsConfig           TicketsConfig?
   Ticket                  Ticket[]
   Bans                    Ban[]
+  warns                   Warn[]
 }
 
 model VoiceChannel {
@@ -59,4 +60,16 @@ model Ban {
   until    BigInt
 
   @@unique(fields: [memberId, guildId])
+}
+
+model Warn {
+  modelId   String @id @default(uuid())
+  memberId  String
+  guildId   String
+  guild     Guild  @relation(fields: [guildId], references: [id])
+  date      BigInt
+  reason    String
+  moderator String
+
+  @@unique(fields: [memberId, guildId, date])
 }
