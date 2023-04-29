@@ -361,3 +361,44 @@ export async function isMemberTempBanned(guildId: string, memberId: string) {
 
 	return res ? true : false;
 }
+
+export async function createMemberWarn(
+	guildId: string,
+	memberId: string,
+	reason: string,
+	moderator: string
+) {
+	await getOrCreateGuild(guildId);
+
+	await prisma.warn.create({
+		data: {
+			guildId,
+			memberId,
+			reason,
+			moderator,
+			date: Date.now(),
+		},
+	});
+}
+export async function removeMemberWarns(guildId: string, memberId: string) {
+	await getOrCreateGuild(guildId);
+
+	await prisma.warn.deleteMany({
+		where: {
+			guildId,
+			memberId,
+		},
+	});
+}
+export async function getMemberWarns(guildId: string, memberId: string) {
+	await getOrCreateGuild(guildId);
+
+	const res = await prisma.warn.findMany({
+		where: {
+			guildId,
+			memberId,
+		},
+	});
+
+	return res;
+}
