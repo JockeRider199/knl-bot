@@ -8,8 +8,8 @@ const config: Config = {
 		GatewayIntentBits.GuildVoiceStates,
 		GatewayIntentBits.GuildMessages,
 	],
-	guildId: "704412119847796856",
-	embedsColor: "#00B700",
+	guildId: "948849368092516373",
+	embedsColor: "#FC817A",
 	music: {
 		nodes: [
 			{
