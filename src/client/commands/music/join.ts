@@ -9,13 +9,14 @@ const command: SlashCommand = {
 		.setName("join")
 		.setDescription("Rejoins le salon vocal dans lequel vous êtes.")
 		.setDMPermission(false),
-	exec: (interaction, client) => {
+	exec: async (interaction, client) => {
 		const guildMember = <GuildMember>interaction.member;
 
+		await interaction.deferReply({ ephemeral: true });
+
 		if (!guildMember.voice.channel) {
-			return interaction.reply({
+			return interaction.editReply({
 				content: `Vous devez être connecté à un salon vocal pour utiliser cette commande.`,
-				ephemeral: true,
 			});
 		}
 
@@ -27,7 +28,7 @@ const command: SlashCommand = {
 			mute: false,
 		});
 
-		interaction.reply({ content: "J'ai rejoins le salon vocal !" });
+		interaction.editReply({ content: "J'ai rejoins le salon vocal !" });
 	},
 };
 
