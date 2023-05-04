@@ -474,14 +474,20 @@ export async function updateUserLevelData(
 ) {
 	await getOrCreateGuild(guildId);
 
-	await prisma.level.update({
+	await prisma.level.upsert({
 		where: {
 			memberId_guildId: {
 				memberId,
 				guildId,
 			},
 		},
-		data: {
+		create: {
+			guildId,
+			memberId,
+			xp,
+			level,
+		},
+		update: {
 			xp,
 			level,
 		},
