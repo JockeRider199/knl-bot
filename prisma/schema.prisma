@@ -20,6 +20,7 @@ model Guild {
   warns                   Warn[]
   logsChannelId           String?
   levels                  Level[]
+  levelsRewards          LevelReward[]
 }
 
 model VoiceChannel {
@@ -85,4 +86,14 @@ model Level {
   level    Int    @default(0)
 
   @@unique([memberId, guildId])
+}
+
+model LevelReward {
+  modelId String @id @default(uuid())
+  guildId String
+  guild   Guild  @relation(fields: [guildId], references: [id])
+  level   Int
+  roleId    String
+
+  @@unique([guildId, level])
 }
