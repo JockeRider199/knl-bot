@@ -461,3 +461,18 @@ export async function updateUserLevelData(
 		},
 	});
 }
+
+export async function getXPLeaderboard(guildId: string) {
+	await getOrCreateGuild(guildId);
+
+	const res = await prisma.level.findMany({
+		where: {
+			guildId,
+		},
+		orderBy: {
+			xp: "desc",
+		},
+	});
+
+	return res;
+}
