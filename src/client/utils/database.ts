@@ -476,3 +476,54 @@ export async function getXPLeaderboard(guildId: string) {
 
 	return res;
 }
+
+export async function setLevelReward(
+	guildId: string,
+	level: number,
+	roleId: string
+) {
+	await getOrCreateGuild(guildId);
+
+	await prisma.levelReward.upsert({
+		where: {
+			guildId_level: {
+				guildId,
+				level,
+			},
+		},
+		create: {
+			guildId,
+			level,
+			roleId,
+		},
+		update: {
+			roleId,
+		},
+	});
+}
+export async function removeLevelReward(guildId: string, level: number) {
+	await getOrCreateGuild(guildId);
+
+	await prisma.levelReward.delete({
+		where: {
+			guildId_level: {
+				guildId,
+				level,
+			},
+		},
+	});
+}
+export async function getLevelRewards(guildId: string) {
+	await getOrCreateGuild(guildId);
+
+	const res = await prisma.levelReward.findMany({
+		where: {
+			guildId,
+		},
+		orderBy: {
+			level: "asc",
+		},
+	});
+
+	return res;
+}
