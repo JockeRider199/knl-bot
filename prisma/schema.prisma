@@ -19,6 +19,7 @@ model Guild {
   Bans                    Ban[]
   warns                   Warn[]
   logsChannelId           String?
+  levels                  Level[]
 }
 
 model VoiceChannel {
@@ -73,4 +74,15 @@ model Warn {
   moderator String
 
   @@unique(fields: [memberId, guildId, date])
+}
+
+model Level {
+  modelId  String @id @default(uuid())
+  memberId String
+  guildId  String
+  guild    Guild  @relation(fields: [guildId], references: [id])
+  xp       BigInt @default(0)
+  level    Int    @default(0)
+
+  @@unique([memberId, guildId])
 }

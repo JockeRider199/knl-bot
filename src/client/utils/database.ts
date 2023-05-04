@@ -428,3 +428,62 @@ export async function setLogsChannel(guildId: string, channelId?: string) {
 		},
 	});
 }
+export async function getUserLevelData(guildId: string, memberId: string) {
+	await getOrCreateGuild(guildId);
+
+	let res = await prisma.level.findUnique({
+		where: {
+			memberId_guildId: {
+				memberId,
+				guildId,
+			},
+		},
+	});
+
+	if (!res) {
+		res = await prisma.level.create({
+			data: {
+				guildId,
+				memberId,
+			},
+		});
+	}
+
+	return res;
+}
+
+export async function getUserLevelRank(guildId: string, memberId: string) {
+	await getOrCreateGuild(guildId);
+
+	const res = await prisma.level.findMany({
+		where: {
+			guildId,
+		},
+		orderBy: {
+			xp: "desc",
+		},
+	});
+
+	return `${res.findIndex((x) => x.memberId === memberId) + 1}/${res.length}`;
+}
+export async function updateUserLevelData(
+	guildId: string,
+	memberId: string,
+	xp: bigint,
+	level: number
+) {
+	await getOrCreateGuild(guildId);
+
+	await prisma.level.update({
+		where: {
+			memberId_guildId: {
+				memberId,
+				guildId,
+			},
+		},
+		data: {
+			xp,
+			level,
+		},
+	});
+}
