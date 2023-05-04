@@ -1,4 +1,4 @@
-import { ChannelType, VoiceState } from "discord.js";
+import { ChannelType, VoiceChannel, VoiceState } from "discord.js";
 import { Event } from "../models/event";
 import * as Database from "../utils/database";
 
@@ -48,6 +48,30 @@ const event: Event = {
 					oldState.channel.id
 				);
 			}
+		}
+
+		// check if the  bot is alone in the voice channel if yes destroy the player after 5 min
+		if (
+			newState.guild.members.me?.voice.channel &&
+			newState.guild.members.me?.voice.channel.members.size == 1
+		) {
+			const player = client.poru.players.get(newState.guild.id);
+			setTimeout(() => {
+				if (
+					newState.guild.members.me?.voice.channel &&
+					newState.guild.members.me?.voice.channel.members.size == 1
+				) {
+					if (!player) return;
+					player.destroy();
+				}
+			}, 1000 * 30);
+		}
+
+		// if bot kicked from the voice channel destroy the player
+		if (!newState.guild.members.me?.voice.channel) {
+			const player = client.poru.players.get(oldState.guild.id);
+			if (!player) return;
+			player.destroy();
 		}
 	},
 };
