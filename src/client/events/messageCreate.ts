@@ -1,6 +1,10 @@
 import { Client, Message, MessageType } from "discord.js";
 import { Event } from "../models/event";
-import { getUserLevelData, updateUserLevelData } from "../utils/database";
+import {
+	getLevelRewards,
+	getUserLevelData,
+	updateUserLevelData,
+} from "../utils/database";
 import { calculateXpForLevel } from "../utils/helpers";
 
 const cooldowns = new Map();
@@ -36,6 +40,17 @@ const event: Event = {
 					newXp,
 					userLevelData.level + 1
 				);
+				const rewards = await getLevelRewards(msg.guild.id);
+				const reward = rewards.find(
+					(reward) => reward.level === userLevelData.level + 1
+				);
+				if (reward) {
+					const role = msg.guild.roles.cache.get(reward.roleId);
+					if (role) {
+						await msg.member!.roles.add(role);
+						await msg.reply(`You have been rewarded with ${role.name}!`);
+					}
+				}
 			} else {
 				await updateUserLevelData(
 					msg.guild.id,
