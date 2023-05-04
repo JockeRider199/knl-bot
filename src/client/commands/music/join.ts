@@ -12,7 +12,7 @@ const command: SlashCommand = {
 	exec: async (interaction, client) => {
 		const guildMember = <GuildMember>interaction.member;
 
-		await interaction.deferReply({ ephemeral: true });
+		await interaction.deferReply();
 
 		if (!guildMember.voice.channel) {
 			return interaction.editReply({
