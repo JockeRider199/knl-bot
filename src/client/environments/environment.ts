@@ -7,6 +7,7 @@ const config: Config = {
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildVoiceStates,
 		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent,
 	],
 	guildId: "704412119847796856",
 	embedsColor: "#00B700",
