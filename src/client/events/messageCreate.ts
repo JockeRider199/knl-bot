@@ -31,9 +31,6 @@ const event: Event = {
 			const nextXpRankup = calculateXpForLevel(userLevelData.level + 1);
 			const newXp = BigInt(xp) + userLevelData.xp;
 			if (newXp > nextXpRankup) {
-				await msg.reply(
-					`You have leveled up to level ${userLevelData.level + 1}!`
-				);
 				await updateUserLevelData(
 					msg.guild.id,
 					msg.author.id,
@@ -48,7 +45,6 @@ const event: Event = {
 					const role = msg.guild.roles.cache.get(reward.roleId);
 					if (role) {
 						await msg.member!.roles.add(role);
-						await msg.reply(`You have been rewarded with ${role.name}!`);
 					}
 				}
 			} else {
@@ -58,7 +54,6 @@ const event: Event = {
 					newXp,
 					userLevelData.level
 				);
-				await msg.reply(`You have gained ${xp} XP!`);
 			}
 
 			cooldowns.set(msg.author.id, Date.now());
