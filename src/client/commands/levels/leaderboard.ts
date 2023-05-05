@@ -14,22 +14,10 @@ const command: SlashCommand = {
 		.setDMPermission(false),
 
 	exec: async (interaction, client) => {
-		// Fking lang
-		// filter with async
-		// explaination: https://medium.com/@debbs119/array-filter-and-array-map-with-async-functions-9636e1ae8d6e
-
 		let leaderboard = await getXPLeaderboard(interaction.guildId!);
-		const boolLeaderoard = await Promise.all(
-			leaderboard.map(async (member) => {
-				try {
-					await interaction.guild!.members.fetch(member.memberId);
-					return true;
-				} catch {
-					return false;
-				}
-			})
-		);
-		leaderboard = leaderboard.filter((_, index) => boolLeaderoard[index]);
+		leaderboard = leaderboard.filter((member) => {
+			return interaction.guild!.members.cache.has(member.memberId);
+		});
 
 		const displayLeaderboard = leaderboard.slice(0, 20);
 

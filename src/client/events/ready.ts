@@ -32,6 +32,10 @@ export const readyEvent: Event = {
 				}
 			}
 		}
+
+		client.guilds.cache.forEach(async (g) => {
+			await g.members.fetch();
+		});
 	},
 };
 
