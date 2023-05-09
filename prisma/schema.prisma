@@ -18,6 +18,7 @@ model Guild {
   Ticket                  Ticket[]
   Bans                    Ban[]
   warns                   Warn[]
+  logsChannelId           String?
   levels                  Level[]
   levelsRewards          LevelReward[]
 }
