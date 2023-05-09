@@ -21,6 +21,7 @@ model Guild {
   logsChannelId           String?
   levels                  Level[]
   levelsRewards          LevelReward[]
+  logsChannelId           String?
 }
 
 model VoiceChannel {
