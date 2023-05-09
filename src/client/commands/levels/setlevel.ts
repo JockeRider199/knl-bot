@@ -78,7 +78,7 @@ const command: SlashCommand = {
 				await updateUserLevelData(
 					interaction.guildId!,
 					user.id,
-					userLevelData.xp + BigInt(xpRequired),
+					BigInt(xpRequired),
 					userLevelData.level + level
 				);
 				interaction.reply({
