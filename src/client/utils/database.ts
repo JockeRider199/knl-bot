@@ -559,29 +559,3 @@ export async function getLevelRewards(guildId: string) {
 
 	return res;
 }
-export async function getLogsChannel(guildId: string) {
-	await getOrCreateGuild(guildId);
-
-	const res = await prisma.guild.findUnique({
-		where: {
-			id: guildId,
-		},
-		select: {
-			logsChannelId: true,
-		},
-	});
-
-	return res?.logsChannelId;
-}
-export async function setLogsChannel(guildId: string, channelId?: string) {
-	await getOrCreateGuild(guildId);
-
-	await prisma.guild.update({
-		where: {
-			id: guildId,
-		},
-		data: {
-			logsChannelId: channelId ?? null,
-		},
-	});
-}
