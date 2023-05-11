@@ -402,3 +402,160 @@ export async function getMemberWarns(guildId: string, memberId: string) {
 
 	return res;
 }
+export async function getLogsChannel(guildId: string) {
+	await getOrCreateGuild(guildId);
+
+	const res = await prisma.guild.findUnique({
+		where: {
+			id: guildId,
+		},
+		select: {
+			logsChannelId: true,
+		},
+	});
+
+	return res?.logsChannelId;
+}
+export async function setLogsChannel(guildId: string, channelId?: string) {
+	await getOrCreateGuild(guildId);
+
+	await prisma.guild.update({
+		where: {
+			id: guildId,
+		},
+		data: {
+			logsChannelId: channelId ?? null,
+		},
+	});
+}
+export async function getUserLevelData(guildId: string, memberId: string) {
+	await getOrCreateGuild(guildId);
+
+	let res = await prisma.level.findUnique({
+		where: {
+			memberId_guildId: {
+				memberId,
+				guildId,
+			},
+		},
+	});
+
+	if (!res) {
+		res = await prisma.level.create({
+			data: {
+				guildId,
+				memberId,
+			},
+		});
+	}
+
+	return res;
+}
+
+export async function getUserLevelRank(guildId: string, memberId: string) {
+	await getOrCreateGuild(guildId);
+
+	const res = await prisma.level.findMany({
+		where: {
+			guildId,
+		},
+		orderBy: {
+			xp: "desc",
+		},
+	});
+
+	return `${res.findIndex((x) => x.memberId === memberId) + 1}/${res.length}`;
+}
+export async function updateUserLevelData(
+	guildId: string,
+	memberId: string,
+	xp: bigint,
+	level: number
+) {
+	await getOrCreateGuild(guildId);
+
+	await prisma.level.upsert({
+		where: {
+			memberId_guildId: {
+				memberId,
+				guildId,
+			},
+		},
+		create: {
+			guildId,
+			memberId,
+			xp,
+			level,
+		},
+		update: {
+			xp,
+			level,
+		},
+	});
+}
+
+export async function getXPLeaderboard(guildId: string) {
+	await getOrCreateGuild(guildId);
+
+	const res = await prisma.level.findMany({
+		where: {
+			guildId,
+		},
+		orderBy: {
+			xp: "desc",
+		},
+	});
+
+	return res;
+}
+
+export async function setLevelReward(
+	guildId: string,
+	level: number,
+	roleId: string
+) {
+	await getOrCreateGuild(guildId);
+
+	await prisma.levelReward.upsert({
+		where: {
+			guildId_level: {
+				guildId,
+				level,
+			},
+		},
+		create: {
+			guildId,
+			level,
+			roleId,
+		},
+		update: {
+			roleId,
+		},
+	});
+}
+export async function removeLevelReward(guildId: string, level: number) {
+	await getOrCreateGuild(guildId);
+
+	await prisma.levelReward.delete({
+		where: {
+			guildId_level: {
+				guildId,
+				level,
+			},
+		},
+	});
+}
+export async function getLevelRewards(guildId: string) {
+	await getOrCreateGuild(guildId);
+
+	const res = await prisma.levelReward.findMany({
+		where: {
+			guildId,
+		},
+		orderBy: {
+			level: "asc",
+		},
+	});
+
+	return res;
+}
