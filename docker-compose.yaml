@@ -25,7 +25,7 @@ services:
     ports:
       - "2333:2333"
   bot:
-    image: jockerider199/knl-bot:0.0.2
+    image: jockerider199/knl-bot:0.1.0
     build:
       context: .
       dockerfile: Dockerfile.Bot

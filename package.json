@@ -1,6 +1,6 @@
 {
 	"name": "knl-bot",
-	"version": "0.0.2",
+	"version": "0.1.0",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
@@ -8,7 +8,8 @@
 		"format": "prettier --write ./src/client/",
 		"clean": "rm -rf dist",
 		"bot:dev": "ts-node src/client/index.ts",
-		"build": "tsc && cp -r prisma dist"
+		"build": "tsc && cp -r prisma dist",
+		"deploy": "docker buildx build --platform linux/arm64,linux/adm64 --push -f Dockerfile.Bot -t jockerider199/knl-bot:0.1.0 ."
 	},
 	"keywords": [],
 	"author": "",
