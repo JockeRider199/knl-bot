@@ -147,6 +147,13 @@ const command: SlashCommand = {
 					interaction.guildId!,
 					channel.id
 				);
+
+				if (ownerId == undefined) {
+					return interaction.reply({
+						content: "Vous ne pouvez pas claim ce salon.",
+					});
+				}
+
 				const isOwnerInChannel = channel.members.has(ownerId!);
 
 				if (ownerId == member.user.id) {
