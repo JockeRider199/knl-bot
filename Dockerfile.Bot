@@ -4,6 +4,7 @@ WORKDIR /home/knl
 
 COPY ./dist /home/knl/
 
+RUN apt-get update -y && apt-get install -y openssl
 RUN npm install
 RUN npx prisma generate
 
